@@ -1,8 +1,8 @@
-package no.novari.flyt.example.gateway.instance
+package no.novari.flyt.side.gateway.instance
 
-import no.novari.flyt.example.gateway.instance.model.AdvancedExample
-import no.novari.flyt.example.gateway.instance.model.SimpleExample
-import no.novari.flyt.example.gateway.instance.model.SimpleExampleStatus
+import no.novari.flyt.side.gateway.instance.model.AdvancedExample
+import no.novari.flyt.side.gateway.instance.model.SimpleExample
+import no.novari.flyt.side.gateway.instance.model.SimpleExampleStatus
 import no.novari.flyt.gateway.webinstance.InstanceProcessor
 import no.novari.flyt.webresourceserver.UrlPaths.EXTERNAL_API
 import org.springframework.beans.factory.annotation.Qualifier
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("$EXTERNAL_API/example/instances")
+@RequestMapping("$EXTERNAL_API/side/instances")
 class ExampleController(
     @param:Qualifier("simpleProcessor")
     private val simpleExampleProcessor: InstanceProcessor<SimpleExample>,
