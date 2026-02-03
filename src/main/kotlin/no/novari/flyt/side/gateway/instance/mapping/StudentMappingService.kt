@@ -205,7 +205,10 @@ class StudentMappingService : InstanceMapper<SideStudentInstance> {
         return InstanceObject(valuePerKey, objectCollectionPerKey)
     }
 
-    private fun mapStringListToInstanceObjects(values: List<String>, valueKey: String): List<InstanceObject> {
+    private fun mapStringListToInstanceObjects(
+        values: List<String>,
+        valueKey: String,
+    ): List<InstanceObject> {
         return values.map { value ->
             InstanceObject(
                 valuePerKey =

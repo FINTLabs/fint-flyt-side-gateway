@@ -17,9 +17,11 @@ class CaseStatusServiceTest {
     @Test
     fun `returns case status when archive case id exists`() {
         val authentication = Mockito.mock(Authentication::class.java)
-        Mockito.`when`(sourceApplicationAuthorizationService.getSourceApplicationId(authentication))
+        Mockito
+            .`when`(sourceApplicationAuthorizationService.getSourceApplicationId(authentication))
             .thenReturn(123L)
-        Mockito.`when`(archiveCaseIdRequestService.getArchiveCaseId(123L, "instance-1"))
+        Mockito
+            .`when`(archiveCaseIdRequestService.getArchiveCaseId(123L, "instance-1"))
             .thenReturn("archive-1")
 
         val result = service.getCaseStatus(authentication, "instance-1")
@@ -31,9 +33,11 @@ class CaseStatusServiceTest {
     @Test
     fun `returns null when archive case id is missing`() {
         val authentication = Mockito.mock(Authentication::class.java)
-        Mockito.`when`(sourceApplicationAuthorizationService.getSourceApplicationId(authentication))
+        Mockito
+            .`when`(sourceApplicationAuthorizationService.getSourceApplicationId(authentication))
             .thenReturn(123L)
-        Mockito.`when`(archiveCaseIdRequestService.getArchiveCaseId(123L, "instance-1"))
+        Mockito
+            .`when`(archiveCaseIdRequestService.getArchiveCaseId(123L, "instance-1"))
             .thenReturn(null)
 
         val result = service.getCaseStatus(authentication, "instance-1")
