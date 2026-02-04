@@ -40,6 +40,11 @@ patches:
                 value:
                     name: server.servlet.context-path
                     value: "/beta/fintlabs-no"
+            -   op: add
+                path: "/spec/env/-"
+                value:
+                    name: novari.flyt.side.dispatch.enabled
+                    value: "false"
         target:
             kind: Application
             name: fint-flyt-side-gateway

@@ -12,6 +12,12 @@ novari:
 spring:
     kafka:
         bootstrap-servers: localhost:9092
+    datasource:
+        url: jdbc:postgresql://localhost:5443/fint-flyt-side-gateway
+        username: postgres
+        password: password
+        hikari:
+            schema: fintlabs_no
 server:
     port: 8109
 

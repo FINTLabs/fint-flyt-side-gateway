@@ -14,10 +14,11 @@ server:
 spring:
     profiles:
         include:
+        - flyt-file-client
         - flyt-kafka
         - flyt-logging
+        - flyt-postgres
         - flyt-web-resource-server
-        - flyt-file-client
 
     output:
         ansi:

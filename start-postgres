@@ -1,0 +1,4 @@
+#!/bin/bash
+
+docker run --rm --name fint-flyt-side-gateway-postgres -p 5443:5432 -e POSTGRES_PASSWORD=password -e POSTGRES_DB=fint-flyt-side-gateway -d postgres
+w
