@@ -2,12 +2,12 @@ package no.novari.flyt.side.gateway.dispatch
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import no.novari.flyt.gateway.webinstance.kafka.ArchiveCaseIdRequestService
+import no.novari.flyt.kafka.instanceflow.headers.InstanceFlowHeaders
 import no.novari.flyt.side.gateway.dispatch.DispatchContextService.Companion.INTEGRATION_STUDENT
 import no.novari.flyt.side.gateway.dispatch.DispatchContextService.Companion.buildDispatchKey
 import no.novari.flyt.side.gateway.dispatch.model.DispatchReceiptEntity
 import no.novari.flyt.side.gateway.dispatch.repository.DispatchContextRepository
 import no.novari.flyt.side.gateway.dispatch.repository.DispatchReceiptRepository
-import no.novari.flyt.kafka.instanceflow.headers.InstanceFlowHeaders
 import org.slf4j.LoggerFactory
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.http.MediaType
