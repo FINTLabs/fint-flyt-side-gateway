@@ -1,10 +1,11 @@
-# FINT Flyt Web Gateway Template
+# FINT Flyt SiDE Gateway
 
 ## Introduction
-This repository is a template for setting up a new *instance gateway* in the FINT Flyt platform.
-The application includes examples of both simple and advanced usage:
-- **Simple**: processes a single instance without collections and without file upload.
-- **Advanced**: demonstrates the use of collections and support for file upload.
+This repository contains the SiDE instance gateway for the FINT Flyt platform.
+The application processes SiDE student instances with collections and document upload support.
+
+## About SiDE
+SiDE (Sikker deling av elevinformasjon) is a digital tool for secure journaling and sharing of student information with teachers while preserving privacy. It was developed in Nordland fylkeskommune through cross-sector collaboration and launched at Bodin vgs, with strong support from school leaders and public officials. The goal is better, more systematic student follow-up, improved overview, and more efficient resource use, replacing informal notes and corridor conversations. It has been rolled out to upper-secondary schools in Nordland with positive feedback and interest from other regions.
 
 ## Technology
 - Spring Boot 3.5

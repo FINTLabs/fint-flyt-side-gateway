@@ -1,22 +1,22 @@
-package no.novari.flyt.side.gateway.instance.advanced
+package no.novari.flyt.side.gateway.instance
 
-import no.novari.flyt.side.gateway.instance.model.AdvancedExample
 import no.novari.flyt.gateway.webinstance.InstanceProcessor
 import no.novari.flyt.gateway.webinstance.InstanceProcessorFactoryService
+import no.novari.flyt.side.gateway.instance.mapping.StudentMappingService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-class AdvancedProcessorConfiguration {
-    @Bean(name = ["advancedProcessor"])
-    fun advancedProcessor(
+class StudentProcessorConfiguration {
+    @Bean
+    fun sideStudentProcessor(
         instanceProcessorFactoryService: InstanceProcessorFactoryService,
-        advancedMappingService: AdvancedMappingService,
-    ): InstanceProcessor<AdvancedExample> {
+        studentMappingService: StudentMappingService,
+    ): InstanceProcessor<SideStudentInstance> {
         return instanceProcessorFactoryService.createInstanceProcessor(
-            "advancedExample",
-            { ae -> ae.sysId },
-            advancedMappingService,
+            "sideStudent",
+            { instance -> instance.instanceId },
+            studentMappingService,
         )
     }
 }
