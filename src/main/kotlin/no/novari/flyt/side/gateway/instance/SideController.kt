@@ -5,7 +5,6 @@ import no.novari.flyt.webresourceserver.UrlPaths.EXTERNAL_API
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication
-import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -36,7 +35,7 @@ class SideController(
     @PostMapping
     fun createSideStudentInstance(
         @RequestBody sideStudentInstance: SideStudentInstance,
-        @AuthenticationPrincipal authentication: Authentication,
+        authentication: Authentication,
     ): ResponseEntity<Void> {
         return sideStudentProcessor
             .processInstance(authentication, sideStudentInstance)
