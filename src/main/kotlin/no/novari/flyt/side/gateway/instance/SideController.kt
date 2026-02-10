@@ -38,6 +38,7 @@ class SideController(
         @RequestBody sideStudentInstance: SideStudentInstance,
         @AuthenticationPrincipal authentication: Authentication,
     ): ResponseEntity<Void> {
-        return sideStudentProcessor.processInstance(authentication, sideStudentInstance)
+        return sideStudentProcessor
+            .processInstance(authentication, sideStudentInstance)
     }
 }
