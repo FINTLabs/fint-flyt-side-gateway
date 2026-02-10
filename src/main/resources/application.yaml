@@ -17,7 +17,6 @@ spring:
         - flyt-file-client
         - flyt-kafka
         - flyt-logging
-        - flyt-postgres
         - flyt-web-resource-server
 
     output:

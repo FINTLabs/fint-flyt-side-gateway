@@ -1,7 +1,6 @@
 package no.novari.flyt.side.gateway.instance
 
 import no.novari.flyt.gateway.webinstance.InstanceProcessor
-import no.novari.flyt.side.gateway.dispatch.DispatchContextService
 import no.novari.flyt.webresourceserver.UrlPaths.EXTERNAL_API
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -20,7 +19,6 @@ import org.springframework.web.server.ResponseStatusException
 class SideController(
     private val sideStudentProcessor: InstanceProcessor<SideStudentInstance>,
     private val caseStatusService: CaseStatusService,
-    private val dispatchContextService: DispatchContextService,
 ) {
     @GetMapping("{sourceApplicationInstanceId}/status")
     fun getCaseStatus(
@@ -42,6 +40,5 @@ class SideController(
     ): ResponseEntity<Void> {
         return sideStudentProcessor
             .processInstance(authentication, sideStudentInstance)
-            .also { dispatchContextService.save(sideStudentInstance) }
     }
 }
