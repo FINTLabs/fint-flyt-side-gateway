@@ -27,12 +27,10 @@ data class SideStudentInstance(
     val importantInformation: List<ImportantInformation> = emptyList(),
     @JsonProperty("markeringer")
     val markers: List<Marker> = emptyList(),
-    @JsonProperty("dkument")
+    @JsonProperty("dokument")
     val document: SideDocument,
     @JsonProperty("dokumenttype")
     val documentType: String,
-    @JsonProperty("callback")
-    val callbackUrl: String,
 )
 
 @JsonIgnoreProperties(ignoreUnknown = true)

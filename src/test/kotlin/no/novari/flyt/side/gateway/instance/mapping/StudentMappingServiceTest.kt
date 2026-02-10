@@ -100,7 +100,6 @@ class StudentMappingServiceTest {
                 markers = listOf(marker),
                 document = document,
                 documentType = "SIDE-ELEV-DOKUMENTASJON",
-                callbackUrl = "https://callback.example.com",
             )
 
         val capturedFiles = mutableListOf<File>()
