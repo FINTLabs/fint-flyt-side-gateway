@@ -8,7 +8,7 @@ import no.novari.flyt.side.gateway.instance.Note
 import no.novari.flyt.side.gateway.instance.NoteContent
 import no.novari.flyt.side.gateway.instance.NoteUpdate
 import no.novari.flyt.side.gateway.instance.SideDocument
-import no.novari.flyt.side.gateway.instance.SideStudentInstance
+import no.novari.flyt.side.gateway.instance.SideInstance
 import no.novari.flyt.side.gateway.instance.UserSummary
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -16,11 +16,11 @@ import org.junit.jupiter.api.Test
 import org.springframework.http.MediaType
 import java.util.UUID
 
-class StudentMappingServiceTest {
-    private val service = StudentMappingService()
+class SideMappingServiceTest {
+    private val service = SideMappingService()
 
     @Test
-    fun `maps side student instance with collections and main document`() {
+    fun `maps side instance with collections and main document`() {
         val document =
             SideDocument(
                 fileName = "SiDE-Elev-Normann-dokumentasjon.pdf",
@@ -86,7 +86,7 @@ class StudentMappingServiceTest {
             )
 
         val input =
-            SideStudentInstance(
+            SideInstance(
                 instanceId = "19643037",
                 id = 20127,
                 studentNumber = "19643037",

@@ -16,7 +16,7 @@ import org.springframework.web.server.ResponseStatusException
 @RestController
 @RequestMapping("$EXTERNAL_API/side/instances")
 class SideController(
-    private val sideStudentProcessor: InstanceProcessor<SideStudentInstance>,
+    private val sideProcessor: InstanceProcessor<SideInstance>,
     private val caseStatusService: CaseStatusService,
 ) {
     @GetMapping("{sourceApplicationInstanceId}/status")
@@ -33,11 +33,11 @@ class SideController(
             )
 
     @PostMapping
-    fun createSideStudentInstance(
-        @RequestBody sideStudentInstance: SideStudentInstance,
+    fun createSideInstance(
+        @RequestBody sideInstance: SideInstance,
         authentication: Authentication,
     ): ResponseEntity<Void> {
-        return sideStudentProcessor
-            .processInstance(authentication, sideStudentInstance)
+        return sideProcessor
+            .processInstance(authentication, sideInstance)
     }
 }

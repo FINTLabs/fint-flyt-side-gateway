@@ -2,21 +2,21 @@ package no.novari.flyt.side.gateway.instance
 
 import no.novari.flyt.gateway.webinstance.InstanceProcessor
 import no.novari.flyt.gateway.webinstance.InstanceProcessorFactoryService
-import no.novari.flyt.side.gateway.instance.mapping.StudentMappingService
+import no.novari.flyt.side.gateway.instance.mapping.SideMappingService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-class StudentProcessorConfiguration {
+class SideProcessorConfiguration {
     @Bean
-    fun sideStudentProcessor(
+    fun sideProcessor(
         instanceProcessorFactoryService: InstanceProcessorFactoryService,
-        studentMappingService: StudentMappingService,
-    ): InstanceProcessor<SideStudentInstance> {
+        sideMappingService: SideMappingService,
+    ): InstanceProcessor<SideInstance> {
         return instanceProcessorFactoryService.createInstanceProcessor(
-            "sideStudent",
+            "side",
             { instance -> instance.instanceId },
-            studentMappingService,
+            sideMappingService,
         )
     }
 }

@@ -10,7 +10,7 @@ import no.novari.flyt.side.gateway.instance.Note
 import no.novari.flyt.side.gateway.instance.NoteContent
 import no.novari.flyt.side.gateway.instance.NoteUpdate
 import no.novari.flyt.side.gateway.instance.SideDocument
-import no.novari.flyt.side.gateway.instance.SideStudentInstance
+import no.novari.flyt.side.gateway.instance.SideInstance
 import no.novari.flyt.side.gateway.instance.UserSummary
 import org.springframework.http.MediaType
 import org.springframework.http.MediaTypeFactory
@@ -18,10 +18,10 @@ import org.springframework.stereotype.Service
 import java.util.UUID
 
 @Service
-class StudentMappingService : InstanceMapper<SideStudentInstance> {
+class SideMappingService : InstanceMapper<SideInstance> {
     override fun map(
         sourceApplicationId: Long,
-        incomingInstance: SideStudentInstance,
+        incomingInstance: SideInstance,
         persistFile: (File) -> UUID,
     ): InstanceObject {
         val documentInstanceObjects =
