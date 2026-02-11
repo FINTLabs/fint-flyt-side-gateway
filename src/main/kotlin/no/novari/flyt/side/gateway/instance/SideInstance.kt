@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class SideStudentInstance(
+data class SideInstance(
     @JsonProperty("instans_id")
     val instanceId: String,
     @JsonProperty("id")
