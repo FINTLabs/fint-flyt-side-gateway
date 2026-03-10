@@ -27,6 +27,8 @@ data class SideInstance(
     val importantInformation: List<ImportantInformation> = emptyList(),
     @JsonProperty("markeringer")
     val markers: List<Marker> = emptyList(),
+    @JsonProperty("besokLogg")
+    val visitLog: List<VisitLogEntry> = emptyList(),
     @JsonProperty("dokument")
     val document: SideDocument,
     @JsonProperty("dokumenttype")
@@ -63,6 +65,8 @@ data class Note(
     val updateFrequency: String? = null,
     @JsonProperty("innhold")
     val content: List<NoteContent> = emptyList(),
+    @JsonProperty("slettetDato")
+    val deletedDate: String? = null,
     @JsonProperty("redigertDato")
     val editedDate: String? = null,
     @JsonProperty("oppdateringer")
@@ -118,9 +122,21 @@ data class Marker(
     @JsonProperty("slettetDato")
     val deletedDate: String? = null,
     @JsonProperty("opprettetAv")
-    val createdBy: MarkerUser,
+    val createdBy: UserSummary,
     @JsonProperty("slettetAv")
-    val deletedBy: MarkerUser? = null,
+    val deletedBy: UserSummary? = null,
+)
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class VisitLogEntry(
+    @JsonProperty("id")
+    val id: Long,
+    @JsonProperty("dato")
+    val date: String,
+    @JsonProperty("tilganger")
+    val accesses: List<String> = emptyList(),
+    @JsonProperty("bruker")
+    val user: UserSummary,
 )
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -129,26 +145,4 @@ data class UserSummary(
     val username: String? = null,
     @JsonProperty("navn")
     val name: String? = null,
-)
-
-@JsonIgnoreProperties(ignoreUnknown = true)
-data class MarkerUser(
-    @JsonProperty("brukernavn")
-    val username: String? = null,
-    @JsonProperty("navn")
-    val name: String? = null,
-    @JsonProperty("superAdmin")
-    val superAdmin: Boolean? = null,
-    @JsonProperty("larlingAdmin")
-    val apprenticeAdmin: Boolean? = null,
-    @JsonProperty("aktiv")
-    val active: Boolean? = null,
-    @JsonProperty("sistInnlogget")
-    val lastLogin: String? = null,
-    @JsonProperty("mailDager")
-    val mailDays: List<String> = emptyList(),
-    @JsonProperty("ikkeVisEkstraInformasjon")
-    val hiddenExtraInformation: List<String> = emptyList(),
-    @JsonProperty("lestRutiner")
-    val readGuidelines: String? = null,
 )
