@@ -5,13 +5,13 @@ import no.novari.flyt.gateway.webinstance.model.File
 import no.novari.flyt.gateway.webinstance.model.instance.InstanceObject
 import no.novari.flyt.side.gateway.instance.ImportantInformation
 import no.novari.flyt.side.gateway.instance.Marker
-import no.novari.flyt.side.gateway.instance.MarkerUser
 import no.novari.flyt.side.gateway.instance.Note
 import no.novari.flyt.side.gateway.instance.NoteContent
 import no.novari.flyt.side.gateway.instance.NoteUpdate
 import no.novari.flyt.side.gateway.instance.SideDocument
 import no.novari.flyt.side.gateway.instance.SideInstance
 import no.novari.flyt.side.gateway.instance.UserSummary
+import no.novari.flyt.side.gateway.instance.VisitLogEntry
 import org.springframework.http.MediaType
 import org.springframework.http.MediaTypeFactory
 import org.springframework.stereotype.Service
@@ -36,6 +36,7 @@ class SideMappingService : InstanceMapper<SideInstance> {
         val importantInformationInstanceObjects =
             mapImportantInformationToInstanceObjects(incomingInstance.importantInformation)
         val markerInstanceObjects = mapMarkersToInstanceObjects(incomingInstance.markers)
+        val visitLogInstanceObjects = mapVisitLogToInstanceObjects(incomingInstance.visitLog)
 
         val valuePerKey =
             buildMap {
@@ -56,6 +57,7 @@ class SideMappingService : InstanceMapper<SideInstance> {
                 "notes" to noteInstanceObjects,
                 "importantInformation" to importantInformationInstanceObjects,
                 "markers" to markerInstanceObjects,
+                "visitLog" to visitLogInstanceObjects,
             )
 
         return InstanceObject(valuePerKey, objectCollectionPerKey)
@@ -74,6 +76,7 @@ class SideMappingService : InstanceMapper<SideInstance> {
                 putOrEmpty("title", note.title)
                 putOrEmpty("type", note.type)
                 putOrEmpty("updateFrequency", note.updateFrequency)
+                putOrEmpty("deletedDate", note.deletedDate)
                 putOrEmpty("editedDate", note.editedDate)
                 putOrEmpty("closed", note.closed)
             }
@@ -147,8 +150,24 @@ class SideMappingService : InstanceMapper<SideInstance> {
                 }
             val objectCollectionPerKey =
                 mutableMapOf<String, Collection<InstanceObject>>(
-                    "createdBy" to mapMarkerUserToInstanceObjects(marker.createdBy),
-                    "deletedBy" to mapMarkerUserToInstanceObjects(marker.deletedBy),
+                    "createdBy" to mapUserSummaryToInstanceObjects(marker.createdBy),
+                    "deletedBy" to mapUserSummaryToInstanceObjects(marker.deletedBy),
+                )
+            InstanceObject(valuePerKey, objectCollectionPerKey)
+        }
+    }
+
+    private fun mapVisitLogToInstanceObjects(visitLog: List<VisitLogEntry>): List<InstanceObject> {
+        return visitLog.map { entry ->
+            val valuePerKey =
+                buildMap {
+                    putOrEmpty("id", entry.id)
+                    putOrEmpty("date", entry.date)
+                }
+            val objectCollectionPerKey =
+                mutableMapOf<String, Collection<InstanceObject>>(
+                    "accesses" to mapStringListToInstanceObjects(entry.accesses, "access"),
+                    "user" to mapUserSummaryToInstanceObjects(entry.user),
                 )
             InstanceObject(valuePerKey, objectCollectionPerKey)
         }
@@ -174,35 +193,6 @@ class SideMappingService : InstanceMapper<SideInstance> {
                     putOrEmpty("name", user.name)
                 },
         )
-    }
-
-    private fun mapMarkerUserToInstanceObjects(user: MarkerUser?): List<InstanceObject> {
-        return if (user == null) {
-            emptyList()
-        } else {
-            listOf(mapMarkerUserToInstanceObject(user))
-        }
-    }
-
-    private fun mapMarkerUserToInstanceObject(user: MarkerUser): InstanceObject {
-        val valuePerKey =
-            buildMap {
-                putOrEmpty("username", user.username)
-                putOrEmpty("name", user.name)
-                putOrEmpty("superAdmin", user.superAdmin)
-                putOrEmpty("apprenticeAdmin", user.apprenticeAdmin)
-                putOrEmpty("active", user.active)
-                putOrEmpty("lastLogin", user.lastLogin)
-                putOrEmpty("readGuidelines", user.readGuidelines)
-            }
-
-        val objectCollectionPerKey =
-            mutableMapOf<String, Collection<InstanceObject>>(
-                "mailDays" to mapStringListToInstanceObjects(user.mailDays, "mailDay"),
-                "hiddenExtraInformation" to mapStringListToInstanceObjects(user.hiddenExtraInformation, "value"),
-            )
-
-        return InstanceObject(valuePerKey, objectCollectionPerKey)
     }
 
     private fun mapStringListToInstanceObjects(

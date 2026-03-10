@@ -3,13 +3,13 @@ package no.novari.flyt.side.gateway.instance.mapping
 import no.novari.flyt.gateway.webinstance.model.File
 import no.novari.flyt.side.gateway.instance.ImportantInformation
 import no.novari.flyt.side.gateway.instance.Marker
-import no.novari.flyt.side.gateway.instance.MarkerUser
 import no.novari.flyt.side.gateway.instance.Note
 import no.novari.flyt.side.gateway.instance.NoteContent
 import no.novari.flyt.side.gateway.instance.NoteUpdate
 import no.novari.flyt.side.gateway.instance.SideDocument
 import no.novari.flyt.side.gateway.instance.SideInstance
 import no.novari.flyt.side.gateway.instance.UserSummary
+import no.novari.flyt.side.gateway.instance.VisitLogEntry
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -39,6 +39,7 @@ class SideMappingServiceTest {
                 roles = listOf("elevtjenesten", "kontaktlarer"),
                 updateFrequency = null,
                 content = listOf(NoteContent(label = "beskrivelse", text = "test")),
+                deletedDate = null,
                 editedDate = "2025-08-07T10:00:00.000Z",
                 updates =
                     listOf(
@@ -62,27 +63,22 @@ class SideMappingServiceTest {
                 lastUpdatedBy = UserSummary(username = "havhil", name = "Havard Hilding"),
             )
 
-        val markerUser =
-            MarkerUser(
-                username = "havhil",
-                name = "Havard Hilding",
-                superAdmin = true,
-                apprenticeAdmin = false,
-                active = true,
-                lastLogin = "2026-02-02T14:11:07.000Z",
-                mailDays = listOf("Mandag", "Tirsdag"),
-                hiddenExtraInformation = listOf("elevtabell", "notat-roller"),
-                readGuidelines = "2025-02-18T20:08:52.000Z",
-            )
-
         val marker =
             Marker(
                 id = 1019,
                 value = "internat",
                 date = "2025-08-06T00:38:13.000Z",
                 deletedDate = null,
-                createdBy = markerUser,
+                createdBy = UserSummary(username = "havhil", name = "Havard Hilding"),
                 deletedBy = null,
+            )
+
+        val visitLogEntry =
+            VisitLogEntry(
+                id = 13026,
+                date = "2025-08-06T00:41:43.000Z",
+                accesses = listOf("larer", "administrator"),
+                user = UserSummary(username = "havhil", name = "Havard Hilding"),
             )
 
         val input =
@@ -98,6 +94,7 @@ class SideMappingServiceTest {
                 notes = listOf(note),
                 importantInformation = listOf(importantInformation),
                 markers = listOf(marker),
+                visitLog = listOf(visitLogEntry),
                 document = document,
                 documentType = "SIDE-ELEV-DOKUMENTASJON",
             )
@@ -165,6 +162,7 @@ class SideMappingServiceTest {
                 "title" to "test",
                 "type" to "elev-notat",
                 "updateFrequency" to "",
+                "deletedDate" to "",
                 "editedDate" to "2025-08-07T10:00:00.000Z",
                 "closed" to "",
             ),
@@ -276,24 +274,37 @@ class SideMappingServiceTest {
             mapOf(
                 "username" to "havhil",
                 "name" to "Havard Hilding",
-                "superAdmin" to "true",
-                "apprenticeAdmin" to "false",
-                "active" to "true",
-                "lastLogin" to "2026-02-02T14:11:07.000Z",
-                "readGuidelines" to "2025-02-18T20:08:52.000Z",
             ),
             markerCreatedBy.valuePerKey,
         )
-
-        val mailDayObjects = markerCreatedBy.objectCollectionPerKey.getValue("mailDays")
-        assertEquals(2, mailDayObjects.size)
-        assertEquals(mapOf("mailDay" to "Mandag"), mailDayObjects.first().valuePerKey)
-
-        val hiddenObjects = markerCreatedBy.objectCollectionPerKey.getValue("hiddenExtraInformation")
-        assertEquals(2, hiddenObjects.size)
-        assertEquals(mapOf("value" to "elevtabell"), hiddenObjects.first().valuePerKey)
+        assertTrue(markerCreatedBy.objectCollectionPerKey.isEmpty())
 
         val deletedByObjects = markerObject.objectCollectionPerKey.getValue("deletedBy")
         assertTrue(deletedByObjects.isEmpty())
+
+        val visitLogObjects = result.objectCollectionPerKey.getValue("visitLog")
+        assertEquals(1, visitLogObjects.size)
+        val visitLogObject = visitLogObjects.single()
+        assertEquals(
+            mapOf(
+                "id" to "13026",
+                "date" to "2025-08-06T00:41:43.000Z",
+            ),
+            visitLogObject.valuePerKey,
+        )
+
+        val accessObjects = visitLogObject.objectCollectionPerKey.getValue("accesses")
+        assertEquals(2, accessObjects.size)
+        assertEquals(mapOf("access" to "larer"), accessObjects.first().valuePerKey)
+
+        val visitUserObjects = visitLogObject.objectCollectionPerKey.getValue("user")
+        assertEquals(1, visitUserObjects.size)
+        assertEquals(
+            mapOf(
+                "username" to "havhil",
+                "name" to "Havard Hilding",
+            ),
+            visitUserObjects.single().valuePerKey,
+        )
     }
 }
