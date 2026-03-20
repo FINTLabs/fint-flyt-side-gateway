@@ -1,5 +1,6 @@
 package no.novari.flyt.side.gateway.instance.mapping
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import no.novari.flyt.gateway.webinstance.model.File
 import no.novari.flyt.side.gateway.instance.ImportantInformation
 import no.novari.flyt.side.gateway.instance.Marker
@@ -18,6 +19,7 @@ import java.util.UUID
 
 class SideMappingServiceTest {
     private val service = SideMappingService()
+    private val objectMapper = ObjectMapper().findAndRegisterModules()
 
     @Test
     fun `maps side instance with collections and main document`() {
@@ -123,186 +125,142 @@ class SideMappingServiceTest {
 
         assertEquals(
             mapOf(
-                "instanceId" to "19643037",
+                "instans_id" to "19643037",
                 "id" to "20127",
-                "studentNumber" to "19643037",
-                "nationalId" to "09070647602",
+                "elevnummer" to "19643037",
+                "fodselsnummer" to "09070647602",
                 "feideId" to "elenor12",
-                "name" to "Elev Normann",
-                "manuallyCreated" to "false",
-                "lastUpdated" to "2025-09-26T11:02:24.063Z",
-                "documentType" to "SIDE-ELEV-DOKUMENTASJON",
+                "navn" to "Elev Normann",
+                "manueltOpprettet" to "false",
+                "sistOppdatert" to "2025-09-26T11:02:24.063Z",
+                "dokumenttype" to "SIDE-ELEV-DOKUMENTASJON",
+                "dokument.tittel" to "SiDE elevdokumentasjon for Elev Normann",
+                "dokument.filnavn" to "SiDE-Elev-Normann-dokumentasjon.pdf",
+                "dokument.fil" to expectedFileId.toString(),
+                "dokument.format" to "application/pdf",
             ),
             result.valuePerKey,
         )
+        assertTrue("dokument" !in result.objectCollectionPerKey)
 
-        val documentObjects = result.objectCollectionPerKey.getValue("documents")
-        assertEquals(1, documentObjects.size)
-        val documentObject = documentObjects.single()
-        assertEquals(
-            mapOf(
-                "title" to "SiDE elevdokumentasjon for Elev Normann",
-                "fileName" to "SiDE-Elev-Normann-dokumentasjon.pdf",
-                "mediaType" to "application/pdf",
-                "file" to expectedFileId.toString(),
-                "mainDocument" to "true",
-            ),
-            documentObject.valuePerKey,
-        )
-        assertTrue(documentObject.objectCollectionPerKey.isEmpty())
-
-        val noteObjects = result.objectCollectionPerKey.getValue("notes")
+        val noteObjects = result.objectCollectionPerKey.getValue("notater")
         assertEquals(1, noteObjects.size)
         val noteObject = noteObjects.single()
         assertEquals(
             mapOf(
                 "id" to "4005",
-                "date" to "2025-08-06T21:35:37.000Z",
-                "dueDate" to "",
-                "title" to "test",
+                "dato" to "2025-08-06T21:35:37.000Z",
+                "frist" to "",
+                "tittel" to "test",
                 "type" to "elev-notat",
-                "updateFrequency" to "",
-                "deletedDate" to "",
-                "editedDate" to "2025-08-07T10:00:00.000Z",
-                "closed" to "",
+                "roller" to objectMapper.writeValueAsString(listOf("elevtjenesten", "kontaktlarer")),
+                "oppdateringsfrekvens" to "",
+                "slettetDato" to "",
+                "redigertDato" to "2025-08-07T10:00:00.000Z",
+                "oppdateringer" to objectMapper.writeValueAsString(note.updates),
+                "ansvarlige" to objectMapper.writeValueAsString(note.responsible),
+                "avsluttet" to "",
             ),
             noteObject.valuePerKey,
         )
 
-        val roleObjects = noteObject.objectCollectionPerKey.getValue("roles")
-        assertEquals(2, roleObjects.size)
-        assertEquals(mapOf("role" to "elevtjenesten"), roleObjects.first().valuePerKey)
-
-        val contentObjects = noteObject.objectCollectionPerKey.getValue("content")
+        val contentObjects = noteObject.objectCollectionPerKey.getValue("innhold")
         assertEquals(1, contentObjects.size)
         assertEquals(
             mapOf(
-                "label" to "beskrivelse",
-                "text" to "test",
+                "verdi" to "beskrivelse",
+                "innhold" to "test",
             ),
             contentObjects.single().valuePerKey,
         )
 
-        val updateObjects = noteObject.objectCollectionPerKey.getValue("updates")
-        assertEquals(1, updateObjects.size)
-        val updateObject = updateObjects.single()
-        assertEquals(
-            mapOf(
-                "date" to "2025-08-07T10:00:00.000Z",
-                "content" to "oppdatert",
-            ),
-            updateObject.valuePerKey,
-        )
-        val updatedByObjects = updateObject.objectCollectionPerKey.getValue("updatedBy")
-        assertEquals(1, updatedByObjects.size)
-        assertEquals(
-            mapOf(
-                "username" to "editor",
-                "name" to "Editor",
-            ),
-            updatedByObjects.single().valuePerKey,
-        )
-
-        val responsibleObjects = noteObject.objectCollectionPerKey.getValue("responsible")
-        assertEquals(1, responsibleObjects.size)
-        assertEquals(
-            mapOf(
-                "username" to "ansvarlig",
-                "name" to "Ansvarlig",
-            ),
-            responsibleObjects.single().valuePerKey,
-        )
-
-        val createdByObjects = noteObject.objectCollectionPerKey.getValue("createdBy")
+        val createdByObjects = noteObject.objectCollectionPerKey.getValue("opprettetAv")
         assertEquals(1, createdByObjects.size)
         assertEquals(
             mapOf(
-                "username" to "havhil",
-                "name" to "Havard Hilding",
+                "brukernavn" to "havhil",
+                "navn" to "Havard Hilding",
             ),
             createdByObjects.single().valuePerKey,
         )
 
-        val editedByObjects = noteObject.objectCollectionPerKey.getValue("editedBy")
+        val editedByObjects = noteObject.objectCollectionPerKey.getValue("redigertAv")
         assertEquals(1, editedByObjects.size)
         assertEquals(
             mapOf(
-                "username" to "editor",
-                "name" to "Editor",
+                "brukernavn" to "editor",
+                "navn" to "Editor",
             ),
             editedByObjects.single().valuePerKey,
         )
 
-        val importantInformationObjects = result.objectCollectionPerKey.getValue("importantInformation")
+        val importantInformationObjects = result.objectCollectionPerKey.getValue("viktigInformasjon")
         assertEquals(1, importantInformationObjects.size)
         val infoObject = importantInformationObjects.single()
         assertEquals(
             mapOf(
-                "information" to "test",
-                "lastUpdated" to "2025-08-06T21:35:49.000Z",
-                "deletedDate" to "",
+                "informasjon" to "test",
+                "sistOppdatert" to "2025-08-06T21:35:49.000Z",
+                "slettetDato" to "",
             ),
             infoObject.valuePerKey,
         )
-        val lastUpdatedByObjects = infoObject.objectCollectionPerKey.getValue("lastUpdatedBy")
+        val lastUpdatedByObjects = infoObject.objectCollectionPerKey.getValue("sistOppdatertAv")
         assertEquals(1, lastUpdatedByObjects.size)
         assertEquals(
             mapOf(
-                "username" to "havhil",
-                "name" to "Havard Hilding",
+                "brukernavn" to "havhil",
+                "navn" to "Havard Hilding",
             ),
             lastUpdatedByObjects.single().valuePerKey,
         )
 
-        val markerObjects = result.objectCollectionPerKey.getValue("markers")
+        val markerObjects = result.objectCollectionPerKey.getValue("markeringer")
         assertEquals(1, markerObjects.size)
         val markerObject = markerObjects.single()
         assertEquals(
             mapOf(
                 "id" to "1019",
-                "value" to "internat",
-                "date" to "2025-08-06T00:38:13.000Z",
-                "deletedDate" to "",
+                "verdi" to "internat",
+                "dato" to "2025-08-06T00:38:13.000Z",
+                "slettetDato" to "",
             ),
             markerObject.valuePerKey,
         )
 
-        val markerCreatedByObjects = markerObject.objectCollectionPerKey.getValue("createdBy")
+        val markerCreatedByObjects = markerObject.objectCollectionPerKey.getValue("opprettetAv")
         assertEquals(1, markerCreatedByObjects.size)
         val markerCreatedBy = markerCreatedByObjects.single()
         assertEquals(
             mapOf(
-                "username" to "havhil",
-                "name" to "Havard Hilding",
+                "brukernavn" to "havhil",
+                "navn" to "Havard Hilding",
             ),
             markerCreatedBy.valuePerKey,
         )
         assertTrue(markerCreatedBy.objectCollectionPerKey.isEmpty())
 
-        val deletedByObjects = markerObject.objectCollectionPerKey.getValue("deletedBy")
+        val deletedByObjects = markerObject.objectCollectionPerKey.getValue("slettetAv")
         assertTrue(deletedByObjects.isEmpty())
 
-        val visitLogObjects = result.objectCollectionPerKey.getValue("visitLog")
+        val visitLogObjects = result.objectCollectionPerKey.getValue("besokLogg")
         assertEquals(1, visitLogObjects.size)
         val visitLogObject = visitLogObjects.single()
         assertEquals(
             mapOf(
                 "id" to "13026",
-                "date" to "2025-08-06T00:41:43.000Z",
+                "dato" to "2025-08-06T00:41:43.000Z",
+                "tilganger" to objectMapper.writeValueAsString(listOf("larer", "administrator")),
             ),
             visitLogObject.valuePerKey,
         )
 
-        val accessObjects = visitLogObject.objectCollectionPerKey.getValue("accesses")
-        assertEquals(2, accessObjects.size)
-        assertEquals(mapOf("access" to "larer"), accessObjects.first().valuePerKey)
-
-        val visitUserObjects = visitLogObject.objectCollectionPerKey.getValue("user")
+        val visitUserObjects = visitLogObject.objectCollectionPerKey.getValue("bruker")
         assertEquals(1, visitUserObjects.size)
         assertEquals(
             mapOf(
-                "username" to "havhil",
-                "name" to "Havard Hilding",
+                "brukernavn" to "havhil",
+                "navn" to "Havard Hilding",
             ),
             visitUserObjects.single().valuePerKey,
         )
