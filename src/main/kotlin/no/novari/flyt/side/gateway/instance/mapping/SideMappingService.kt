@@ -15,7 +15,7 @@ import no.novari.flyt.side.gateway.instance.VisitLogEntry
 import org.springframework.http.MediaType
 import org.springframework.http.MediaTypeFactory
 import org.springframework.stereotype.Service
-import java.util.*
+import java.util.UUID
 
 @Service
 class SideMappingService : InstanceMapper<SideInstance> {
