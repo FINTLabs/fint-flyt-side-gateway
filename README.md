@@ -9,7 +9,7 @@ SiDE (Sikker deling av elevinformasjon) is a digital tool for secure journaling 
 
 ## Technology
 - Spring Boot 3.5
-- Java 21
+- Java 25
 - Kotlin
 - ktlint
 - Blocking architecture (non-reactive)
