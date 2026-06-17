@@ -1,10 +1,10 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    id("org.springframework.boot") version "3.5.9"
+    id("org.springframework.boot") version "3.5.15"
     id("io.spring.dependency-management") version "1.1.7"
-    kotlin("jvm") version "2.1.10"
-    kotlin("plugin.spring") version "2.1.10"
+    kotlin("jvm") version "2.4.0"
+    kotlin("plugin.spring") version "2.4.0"
     id("org.jlleitschuh.gradle.ktlint") version "13.1.0"
 }
 
@@ -13,7 +13,14 @@ version = "0.0.1-SNAPSHOT"
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(21))
+        languageVersion.set(JavaLanguageVersion.of(25))
+    }
+}
+
+kotlin {
+    compilerOptions {
+        freeCompilerArgs.add("-Xjsr305=strict")
+        jvmTarget.set(JvmTarget.fromTarget("25"))
     }
 }
 
@@ -34,17 +41,11 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
 
-    implementation("no.novari:flyt-web-instance-gateway:1.3.7")
+    implementation("no.novari:flyt-web-instance-gateway:2.0.1")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-}
-
-tasks.withType<KotlinCompile>().configureEach {
-    compilerOptions {
-        freeCompilerArgs.add("-Xjsr305=strict")
-    }
 }
 
 tasks.withType<Test> {
