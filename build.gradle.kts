@@ -67,8 +67,11 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
 
-    implementation("no.novari:flyt-web-instance-gateway:3.0.0")
+    implementation("no.novari:flyt-web-instance-gateway:3.1.0-rc-3")
     implementation("no.novari:flyt-cache:3.0.0")
+    implementation("no.novari:telemetry-starter:0.0.4")
+
+    runtimeOnly("net.logstash.logback:logstash-logback-encoder:9.0")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
