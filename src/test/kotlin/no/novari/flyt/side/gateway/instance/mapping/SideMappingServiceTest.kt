@@ -1,7 +1,7 @@
 package no.novari.flyt.side.gateway.instance.mapping
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import no.novari.flyt.gateway.webinstance.model.File
+import no.novari.flyt.gateway.instance.model.File
 import no.novari.flyt.side.gateway.instance.ImportantInformation
 import no.novari.flyt.side.gateway.instance.Marker
 import no.novari.flyt.side.gateway.instance.Note

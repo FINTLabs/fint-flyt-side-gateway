@@ -1,6 +1,6 @@
 package no.novari.flyt.side.gateway.instance
 
-import no.novari.flyt.gateway.webinstance.InstanceProcessor
+import no.novari.flyt.gateway.instance.InstanceProcessor
 import no.novari.flyt.webresourceserver.UrlPaths.EXTERNAL_API
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
