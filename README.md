@@ -16,9 +16,9 @@ SiDE (Sikker deling av elevinformasjon) is a digital tool for secure journaling 
 
 ## Dependencies
 This project now only needs:
-- `fint-flyt-web-instance-gateway`
+- `fint-flyt-gateway-starter`
 
-The `fint-flyt-web-instance-gateway` dependency already includes the other required dependencies.
+The `fint-flyt-gateway-starter` dependency already includes the other required dependencies.
 
 ## ktlint
 `ktlint` is used to ensure consistent code formatting and style in the project.
