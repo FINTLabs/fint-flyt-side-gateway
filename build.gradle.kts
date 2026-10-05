@@ -47,6 +47,10 @@ repositories {
     mavenLocal()
 }
 
+tasks.jar {
+    isEnabled = false
+}
+
 extra["httpclient5.version"] = "5.6.3"
 extra["httpcore5.version"] = "5.4.4"
 extra["jackson-bom.version"] = "2.22.3"

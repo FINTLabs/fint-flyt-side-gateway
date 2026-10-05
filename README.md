@@ -29,3 +29,7 @@ To enable `ktlint` in IntelliJ:
 2. Go to *Settings → Tools → ktlint* to configure it.
 3. Enable *Distract Free Mode* for a cleaner workspace.
    In this mode, `ktlint` formatting is applied automatically on save.
+
+## Running Locally
+
+Start Kafka on `localhost:9092` with `docker compose up -d`, then run the app with `./gradlew bootRun --args='--spring.profiles.active=local-staging'`. Add `--profile tools` to also start Kafdrop on http://localhost:19000. `docker compose down -v` stops everything and wipes the data.
