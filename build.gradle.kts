@@ -81,7 +81,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
 
-    implementation("no.novari:flyt-gateway-starter:4.3.0")
+    implementation("no.novari:flyt-gateway-starter:5.0.0-rc-2")
 
     runtimeOnly("io.micrometer:micrometer-registry-prometheus")
 
