@@ -34,6 +34,8 @@ To enable `ktlint` in IntelliJ:
 
 Start Kafka on `localhost:9092` with `docker compose up -d`, then run the app with `./gradlew bootRun --args='--spring.profiles.active=local-staging'`. Add `--profile tools` to also start Kafdrop on http://localhost:19000. Kafka topics are empty on every start.
 
+API calls are authorized against `fint-flyt-authorization-service` on `http://localhost:8086`, and the status endpoint looks up the archive instance ID in `fint-flyt-history-service` on `http://localhost:8083`. Run both locally. The gateway gets its token for these calls from NAM, so set `FINT_FLYT_AUTHORIZATION_SSO_CLIENT_ID` and `FINT_FLYT_AUTHORIZATION_SSO_CLIENT_SECRET` to `fint-flyt-authorization-oauth2-client` from a beta namespace, and start both services with `fint.flyt.authorization.sso.client-id` set to the same client ID so the token is accepted.
+
 ## Dependency Locking
 
 The build uses [Gradle dependency locking](https://docs.gradle.org/current/userguide/dependency_locking.html), so every build resolves exactly the same direct and transitive versions. The locked versions live in the committed `gradle.lockfile` files. A pull request therefore shows every transitive version change it causes. Gradle plugins are not locked, because Dependabot only updates `gradle.lockfile`; their versions are pinned in the `plugins` block instead.
